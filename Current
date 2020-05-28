@@ -1,0 +1,25 @@
+
+package maintest;
+
+
+public class Current extends Account {
+        
+    private double balance;
+    
+    
+    public Current(){
+        super();
+        balance = 0;
+    }
+    
+    public Current(String isim,String soyisim,int hesapno,int bakiye){
+        super(isim,soyisim,hesapno,bakiye);
+        this.balance=bakiye;
+    }
+    
+    
+    public void setBalance(int balance){
+        this.balance=balance;
+    }
+}
+
