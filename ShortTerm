@@ -1,0 +1,26 @@
+
+package maintest;
+
+
+public class ShortTerm extends Account {
+    
+    private double balance;
+    private double interestRate;
+    
+    public ShortTerm(){
+        super();
+        balance = 1000;
+        interestRate = (17/100);
+    }
+    
+    public ShortTerm(String isim,String soyisim,int hesapno,int bakiye,double interestRate){
+        super(isim,soyisim,hesapno,bakiye);
+        this.balance=bakiye;
+        this.interestRate=interestRate;
+    }
+    
+    
+    public void setBalance(int balance){
+        this.balance=balance;
+    }
+}
