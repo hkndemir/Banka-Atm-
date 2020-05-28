@@ -1,0 +1,29 @@
+
+package maintest;
+
+
+public class LongTerm extends Account  {
+    
+    private double balance;
+    private double interestRate;
+    
+    public LongTerm(){
+        super();
+        balance = 1000;
+        interestRate = (24/100);
+    }
+    
+    public LongTerm(String isim,String soyisim,int hesapno,int bakiye,double interestRate){
+        super(isim,soyisim,hesapno,bakiye);
+        this.balance=bakiye;
+        this.interestRate=interestRate;
+    }
+    
+    
+    public void setBalance(int balance){
+        this.balance=balance;
+    }
+    public double getBalance(){
+        return balance;
+    }
+}
