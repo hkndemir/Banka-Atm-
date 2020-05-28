@@ -1,0 +1,80 @@
+
+package maintest;
+
+import java.util.Date;
+
+public class Account {
+    private String isim;
+    private String soyisim;
+    int id;
+    int balance;
+    private int sifre;
+    private Date dateCreated;
+    private int gun;
+    private int ay;
+    private int yil;
+    
+    
+    public Account(){
+        id = 0;
+        balance = 0;
+        dateCreated = new Date();
+        gun = 01;
+        ay = 01;
+        yil = 2019;
+        sifre = 0;
+    }
+    protected Account(String isim,String soyisim,int hesapno,int bakiye){
+        this.isim=isim;
+        this.soyisim=soyisim;
+        this.balance = bakiye;
+        this.id = hesapno;
+        dateCreated = new Date();
+    }
+    public String getName(){
+        return isim;
+    }
+    public void setName(String name){
+        isim = name;
+    }
+    public String getLastName(){
+        return soyisim;
+    }
+    public void setLastName(String lastname){
+        soyisim = lastname;
+    }
+    
+    public int getId(){
+        return id;
+    }
+    public int getPin(){
+        return sifre;
+    }
+    public void setPin(int sifre){
+        this.sifre = sifre;
+    }
+    
+    public void setId(int hesapno){
+        id = hesapno;
+    }
+    public double getBalance(){
+        return balance;
+    }
+    
+    public void setBalance(int bakiye){
+        balance = bakiye;
+    }
+    
+    public void withdraw(int amount){
+        balance = balance - amount;
+    }
+    public void deposit(int amount){
+        balance = balance + amount;
+    }
+    
+    public void Benefit(int girilengun,int girilenay,int girilenyil){
+        int ilkgun = (397);
+        int songun = ((girilengun) + (girilenay*30) + (girilenyil-yil)*360);
+        int hesapkari = (songun - ilkgun);
+    }
+}
