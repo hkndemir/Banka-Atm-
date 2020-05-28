@@ -1,0 +1,296 @@
+package maintest;
+
+import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.*;
+import java.time.LocalDate;
+import java.time.Month;
+import java.time.temporal.ChronoUnit;
+
+public class MainTest {
+
+    static Scanner input = new Scanner(System.in);
+
+    public static void main(String[] args) throws FileNotFoundException, IOException {
+
+        // GİRİŞ YAPMADAN OUTPUT DOSYASINA BAKMANIZI ÖNERİRİM.
+        int HesaplarDizisi[] = {100001, 200001, 300001};
+        ArrayList HesaplarListesi = new ArrayList();
+
+        System.out.println("İşlem yapıyor olduğunuz tarih : " + LocalDate.now()); //Bugüne ait tarihi veren kod.
+        LocalDate varsayilangun = LocalDate.parse("2019-01-01");
+        LocalDate anlikislemtarihi = LocalDate.now();
+
+        System.out.print("Hesap açmak için 1'i \nHesabınıza giriş yapmak için 2'yi \nYetkili girişi yapmak için 3'ü \nÇıkış yapmak için 4'ü tuşlayınız. ");
+        int type = input.nextInt();
+
+        Account obj1 = new Account();
+
+        switch (type) {
+            case 1: { //HESAP AÇILIM KISMI
+
+                System.out.print("Lütfen açmak istediğiniz hesap türünü seçiniz : \nKısa vadeli hesap için 1'i \nUzun vadeli hesap için 2'yi \nCari hesap için 3'ü tuşlayınız. ");
+                int acilacakhesap = input.nextInt();
+
+                //KISA VADELİ HESAP AÇILIMI
+                if (acilacakhesap == 1) {
+                    System.out.println("Uyarı..! Kısa vadeli hesap açabilmek için 1000 TL bakiye yüklemeniz \nyada 1000 TL bakiyenizin olması gerekmektedir."
+                            + "Devam etmek istiyor musunuz ? (Evet için 1 | Hayır için 2)");
+                    int hesapicinverilencevap = input.nextInt();
+                    if (hesapicinverilencevap == 1) {
+                        ShortTerm kisavade1 = new ShortTerm();
+                        System.out.print("Lütfen isminizi giriniz : ");
+                        String yenisim = input.next();
+                        kisavade1.setName(yenisim);
+                        System.out.print("Lütfen soyisminizi giriniz : ");
+                        String yenisoyisim = input.next();
+                        kisavade1.setLastName(yenisoyisim);
+                        System.out.print("Lütfen bakiyenizi giriniz : ");
+                        int yenibakiye = input.nextInt();
+                        kisavade1.setBalance(yenibakiye);
+                        if (yenibakiye >= 1000) {
+                            System.out.println("Hoşgeldiniz Sayın " + yenisim + " " + yenisoyisim + "...");
+                            System.out.println("Kısa Vadeli hesabınız başarılı bir şekilde açılmıştır.\nHesap numaranız : '100002' ve Şifreniz : '123456' "
+                                    + "\nBizi tercih ettiğiniz için çok teşekkür ederiz..");
+
+                        } else {
+                            System.out.println("Kısa Vadeli hesap açabilmek için en az 1000 TL bakiyenizin olması gerekmektedir.\nYeterli miktarda bakiyeniz"
+                                    + " olmadığı için işleminiz iptal edilmiştir.");
+                            break;
+                        }
+                        int kisavadehesapno = 100002;
+                        int kisavadesifre = 123456;
+                        kisavade1.setId(kisavadehesapno);
+                        kisavade1.setPin(kisavadesifre);
+                        File file = new File("output.txt"); //Kısa vadeli hesap açtığımız zaman bunu veritabanımıza yazdıran kısım buradan başlıyor.
+                        try {
+                            FileOutputStream output = new FileOutputStream(file, true);
+                            String data = ("\nID: " + kisavadehesapno + " - " + yenisim + " " + yenisoyisim + " - Balance: " + yenibakiye);
+                            System.out.println();
+                            output.write(data.getBytes());
+
+                            output.flush();
+                            output.close();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            System.out.println();
+                        }
+                        //Buraya kadar devam ediyor.
+                    } else {
+                        System.out.println("İşleminiz iptal ediliyor. Lütfen bekleyiniz...\nİşleminiz başarıyla iptal edildi.");
+                        break;
+                    }
+
+                } //UZUN VADELİ HESAP AÇILIMI
+                else if (acilacakhesap == 2) {
+                    System.out.println("Uyarı..! Uzun vadeli hesap açabilmek için 1500 TL bakiye yüklemeniz \nyada 1500 TL bakiyenizin olması gerekmektedir."
+                            + "Devam etmek istiyor musunuz ? (Evet için 1 | Hayır için 2)");
+                    int hesapicinverilencevap = input.nextInt();
+                    if (hesapicinverilencevap == 1) {
+                        LongTerm uzunvade1 = new LongTerm();
+                        System.out.print("Lütfen isminizi giriniz : ");
+                        String yenisim = input.next();
+                        uzunvade1.setName(yenisim);
+                        System.out.print("Lütfen soyisminizi giriniz : ");
+                        String yenisoyisim = input.next();
+                        uzunvade1.setLastName(yenisoyisim);
+                        System.out.print("Lütfen bakiyenizi giriniz : ");
+                        int yenibakiye = input.nextInt();
+                        uzunvade1.setBalance(yenibakiye);
+                        if (yenibakiye >= 1500) {
+                            System.out.println("Hoşgeldiniz Sayın " + yenisim + " " + yenisoyisim + "...");
+                            System.out.println("Uzun Vadeli hesabınız başarılı bir şekilde açılmıştır.\nHesap numaranız : '200002' ve Şifreniz : '123456' "
+                                    + "\nBizi tercih ettiğiniz için çok teşekkür ederiz..");
+                        } else {
+                            System.out.println("Uzun Vadeli hesap açabilmek için en az 1500 TL bakiyenizin olması gerekmektedir.\nYeterli miktarda bakiyeniz"
+                                    + " olmadığı için işleminiz iptal edilmiştir.");
+                            break;
+                        }
+
+                        int uzunvadehesapno = 200002;
+                        int uzunvadesifre = 123456;
+                        uzunvade1.setId(uzunvadehesapno);
+                        uzunvade1.setPin(uzunvadesifre);
+                        File file = new File("output.txt"); //Uzun vadeli hesap açtığımız zaman bunu veritabanımıza yazdıran kısım buradan başlıyor.
+                        try {
+                            FileOutputStream output = new FileOutputStream(file, true);
+                            String data = ("\nID: " + uzunvadehesapno + " - " + yenisim + " " + yenisoyisim + " - Balance: " + yenibakiye);
+                            output.write(data.getBytes());
+
+                            output.flush();
+                            output.close();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            System.out.println();
+                        }
+                        //Buraya kadar sürüyor.
+                    } else {
+                        System.out.println("İşleminiz iptal ediliyor lütfen bekleyiniz...\nİşleminiz başarıyla iptal edildi.");
+                        break;
+                    }
+                } //CARİ HESAP AÇILIMI
+                else if (acilacakhesap == 3) {
+                    System.out.println("Not: Cari hesap açabilmek için herhangi bir bakiye limiti yoktur."
+                            + "Devam etmek istiyor musunuz ? (Evet için 1 | Hayır için 2)");
+                    int hesapicinverilencevap = input.nextInt();
+                    if (hesapicinverilencevap == 1) {
+                        Current current1 = new Current();
+                        System.out.print("Lütfen isminizi giriniz : ");
+                        String yenisim = input.next();
+                        current1.setName(yenisim);
+                        System.out.print("Lütfen soyisminizi giriniz : ");
+                        String yenisoyisim = input.next();
+                        current1.setLastName(yenisoyisim);
+                        System.out.print("Lütfen bakiyenizi giriniz : ");
+                        int yenibakiye = input.nextInt();
+                        current1.setBalance(yenibakiye);
+                        System.out.println("Hoşgeldiniz Sayın " + yenisim + " " + yenisoyisim + "...");
+                        System.out.println("Cari hesabınız başarılı bir şekilde açılmıştır.\nHesap numaranız : '300002' ve Şifreniz : '123456' "
+                                + "\nBizi tercih ettiğiniz için çok teşekkür ederiz..");
+                        int currenthesapno = 300002;
+                        int currentsifre = 123456;
+                        current1.setId(currenthesapno);
+                        current1.setPin(currentsifre);
+                        File file = new File("output.txt"); //Açılan cari hesabı veritabanımıza yazdıran kısım burdan başlıyor.
+                        try {
+                            FileOutputStream output = new FileOutputStream(file, true);
+                            String data = ("\nID: " + currenthesapno + " - " + yenisim + " " + yenisoyisim + " - Balance: " + yenibakiye);
+                            output.write(data.getBytes());
+
+                            output.flush();
+                            output.close();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            System.out.println();
+                        }
+                        // Buraya kadar sürüyor.
+                    } else {
+                        System.out.println("İşleminiz iptal ediliyor lütfen bekleyiniz...\nİşleminiz başarıyla iptal edildi.");
+                        break;
+                    }
+                } else {
+                    System.out.println("Hatalı bir tuşlama yaptınız. İşleminiz iptal ediliyor lütfen bekleyiniz.\nİşleminiz başarıyla iptal edildi.");
+                    break;
+                }
+                break;
+            }
+            case 2: { //HESAP GİRİŞ KISMI
+                for (int i = 0; i < HesaplarDizisi.length; i++) {
+                    HesaplarListesi.add(HesaplarDizisi[i]);
+                }
+
+                System.out.print("Hesap numaranızı giriniz : ");
+                int hesapno = input.nextInt();
+                obj1.setId(hesapno);
+
+                System.out.print("Hesap şifresini giriniz : ");
+                int hesapsifre = input.nextInt();
+                obj1.setPin(hesapsifre);
+
+                if (HesaplarListesi.contains(hesapno)) { //Hesapların sistem veritabanımızda olup olmadığını kontrol eden kısım.
+                    if (hesapsifre == 123456) {
+                        System.out.println("Girişiniz başarılı. Hoşgeldiniz." + "( Bu hesap " + varsayilangun.until(anlikislemtarihi, ChronoUnit.DAYS)
+                                + " gündür aktif şekilde kullanılmaktadır. ) ");
+                    } else {
+                        System.out.println("Şifrenizi yanlış girdiğiniz için \ngüvenlik amacıyla işleminiz iptal edilmiştir.");
+                        break;
+                    }
+                } else {
+                    System.out.println("Hesap numaranızı yanlış girdiğiniz için \ngüvenlik amacıyla işleminiz iptal edilmiştir.");
+                    break;
+                }
+
+                System.out.print("Lütfen hesap bakiyesini giriniz : ");
+                int hesapbakiye = input.nextInt();
+                obj1.setBalance(hesapbakiye);
+
+                System.out.print("Şifrenizi değiştirmek için 1'i \nPara işlemleri için 2'yi tuşlayınız. "); //Şifre değiştirme yaptığımız ekran.
+                int yapilacakislem = input.nextInt();
+                if (yapilacakislem == 1) {
+                    System.out.print("Sadece rakamlardan oluşan yeni bir şifre giriniz : ");
+                    int degistirilensifre = input.nextInt();
+                    System.out.print("Lütfen yeni şifrenizi tekrardan giriniz : ");
+                    int sifretekrari = input.nextInt();
+                    if (sifretekrari == degistirilensifre) {
+                        obj1.setPin(sifretekrari);
+                        System.out.println(hesapno + " numaralı hesaba ait yeni şifreniz : '" + obj1.getPin() + "'");
+                    } else {
+                        System.out.println("Hatalı giriş yaptığınızdan ötürü işleminiz güvenlik amacıyla iptal edilmiştir.");
+                        break;
+                    }
+
+                } else if (yapilacakislem == 2) { //Para çekme ve yatırma işlemlerini yaptığımız yer.
+                    System.out.print("Para yatırmak için 1'i \nPara çekmek için 2'yi tuşlayınız. ");
+                    int yapilanislem = input.nextInt();
+                    if (yapilanislem == 1) {
+                        System.out.print("Yatırılacak tutarı giriniz : ");
+                        int yatirilacaktutar = input.nextInt();
+                        obj1.deposit(yatirilacaktutar);
+                        System.out.println("Hesabınıza " + yatirilacaktutar + " TL yatırılıyor.\nHesabınızın yeni bakiyesi : " + obj1.getBalance() + " TL'dir.\nİşleminiz başarıyla gerçekleştirilmiştir.");
+                    } else {
+                        System.out.print("Çekilecek tutarı giriniz : ");
+                        int cekilecektutar = input.nextInt();
+                        obj1.withdraw(cekilecektutar);
+                        System.out.println("Hesabınızdan " + cekilecektutar + " TL çekiliyor.\nHesabınızın yeni bakiyesi : " + obj1.getBalance() + " TL'dir.\nİşleminiz başarıyla gerçekleştirilmiştir.");
+                    }
+
+                } else {
+                    System.out.println("Sizden istenilen işlemlerden herhangi birisini tuşlamadığınız için \nişleminiz iptal edilmiştir.");
+                }
+
+                break;
+
+            }
+
+            case 3: { //YETKİLİ GİRİŞİ KISMI
+                System.out.println("Yetkili girişi için geçerli ID ve Pin'inizi arada boşluk kullanarak yazınız : ");
+                int yetkiligirisid = input.nextInt();
+                int yetkiligirispin = input.nextInt();
+                if (yetkiligirisid == 00 && yetkiligirispin == 01) {
+                    System.out.println(" **_**  Welcome Boss  **_** ");
+                    System.out.println("Tüm müşterilerimizi görmek istiyorsanız 1'i tuşlamanız yeterli olacaktır. ");
+                    int yetkiligiristuslamasi = input.nextInt();
+                    System.out.println();
+                    //Buradan aşağısı tüm müşterilerimizi konsola yazdırma kısmı.
+                    if (yetkiligiristuslamasi == 1) {
+
+                        FileReader fileReader = new FileReader("output.txt");
+                        String line;
+                        BufferedReader br = new BufferedReader(fileReader);
+                        while ((line = br.readLine()) != null) {
+                            System.out.println(line);
+                        }
+                        br.close();
+                        //Buraya kadar olan kısım.
+                    } else {
+                        System.out.println("Nasıl isterseniz Patron sonra görüşmek dileklerimle...");
+                        break;
+                    }
+
+                } else {
+                    System.out.println("Yetkili kişi olduğunuzdan emin miyiz? \nÇünkü yanlış bilgi girdiniz ve işleminizi iptal etmek zorunda kaldım.");
+                    break;
+                }
+                break;
+            }
+
+            case 4: { // UYGULAMADAN ÇIKIŞ YAPMA KISMI
+                System.out.println("İşleminiz iptal ediliyor lütfen bekleyiniz... \nİşleminiz başarıyla iptal edilmiştir. İyi günler...");
+                break;
+            }
+            default: { //KULLANICININ SUNDUĞUMUZ 4 RAKAMDAN BİRİNİ TUŞLAMADIĞI TAKDİRDE ÇALIŞACAK OLAN DEFAULT CASE KISMIMIZ.
+                System.out.println("Sizden istenilen komutlarda tuşlama yapmadığınız için işleminiz iptal edilmiştir.");
+                break;
+            }
+
+        }
+
+    }
+}
